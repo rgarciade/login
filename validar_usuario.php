@@ -18,9 +18,21 @@
 			$nbd="MIBASEDEDATOS";
 		#destino despues de validar
 			$ddv="location:paginaprivada.php";
-		
+		#encriptacion confirmacion
+			#poner false si no queremos encriptacion y true si queremos encriptacion
+			define("ActivEncrip","true");
+		#encriptacion
+			define("Encrip","md5");
+		#secret
+			define("Secret","palabrasecret");
 		
   # variables obtenidas en el formulario del index y pasadas por post
+function encriptar($pass){
+	
+	$passencriptada= hash_hmac(Encrip, $pass, Secret);
+
+	return $passencriptada;
+}
 	
 if( isset($_POST['Email']))
 {
@@ -33,10 +45,9 @@ if( isset($_POST['Email']))
 if( isset($_POST['Password']))
 {
 	$pass=$_POST['Password'];
-
+	if (ActivEncrip == "true"){$pass=encriptar($pass);}
 }else{
-	$pass="";
-	
+	$pass="";	
 }
 ## NOCSESION SERA DISTINTO DE "" CUANDO EN EL FORMULARIO HAYAMOS MARCADO LA OPCION DE PERMANECER CONECTADO 
 if( isset($_POST['nocsesion']))
